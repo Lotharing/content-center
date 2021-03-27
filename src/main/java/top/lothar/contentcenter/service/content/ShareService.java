@@ -13,6 +13,8 @@ import top.lothar.contentcenter.domain.dto.user.UserDTO;
 import top.lothar.contentcenter.domain.entity.content.Share;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 /**
  * <h1></h1>
@@ -39,10 +41,21 @@ public class ShareService {
         Integer userId = share.getUserId();
         // 从n a c o s注册中心获取可用的user实例子
         List<ServiceInstance> instances = discoveryClient.getInstances("user-center");
+
         String targetUri = instances.stream()
                 .map(instance -> instance.getUri().toString() + "/users/{id}")
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("当前没有实例..."));
+
+        // 所有用户中心实例的请求地址
+        List<String> targetUris = instances.stream()
+                .map(instance -> instance.getUri().toString() + "/users/{id}")
+                .collect(Collectors.toList());
+
+        // 客户端负载均衡： 随机算法
+        int index = ThreadLocalRandom.current().nextInt(targetUris.size());
+        targetUri = targetUris.get(index);
+
         log.info("请求的目标地址: {}" , targetUri);
         // 怎么调用用户微服务的 /users/{id} 的
         UserDTO userDTO = restTemplate.getForObject(targetUri, UserDTO.class,1);
