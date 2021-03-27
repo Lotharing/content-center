@@ -44,7 +44,7 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!-- spring-cloud-starter {spring cloud 子项目名称 - 模块名称} -->
+        <!-- spring-cloud-starter {spring cloud 子项目名称 - 模块名称} 包含Ribbon-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>

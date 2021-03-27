@@ -40,27 +40,30 @@ public class ShareService {
         // 发布人ID
         Integer userId = share.getUserId();
         // 从n a c o s注册中心获取可用的user实例子
-        List<ServiceInstance> instances = discoveryClient.getInstances("user-center");
+        // List<ServiceInstance> instances = discoveryClient.getInstances("user-center");
 
-        String targetUri = instances.stream()
-                .map(instance -> instance.getUri().toString() + "/users/{id}")
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("当前没有实例..."));
+//        String targetUri = instances.stream()
+//                .map(instance -> instance.getUri().toString() + "/users/{id}")
+//                .findFirst()
+//                .orElseThrow(() -> new IllegalArgumentException("当前没有实例..."));
 
         // 所有用户中心实例的请求地址
-        List<String> targetUris = instances.stream()
-                .map(instance -> instance.getUri().toString() + "/users/{id}")
-                .collect(Collectors.toList());
+//        List<String> targetUris = instances.stream()
+//                .map(instance -> instance.getUri().toString() + "/users/{id}")
+//                .collect(Collectors.toList());
+//
+//        // 客户端负载均衡： 随机算法
+//        int index = ThreadLocalRandom.current().nextInt(targetUris.size());
+//        targetUri = targetUris.get(index);
 
-        // 客户端负载均衡： 随机算法
-        int index = ThreadLocalRandom.current().nextInt(targetUris.size());
-        targetUri = targetUris.get(index);
+//        log.info("请求的目标地址: {}" , targetUri);
+//        // 怎么调用用户微服务的 /users/{id} 的
+//        UserDTO userDTO = restTemplate.getForObject(targetUri, UserDTO.class,1);
 
-        log.info("请求的目标地址: {}" , targetUri);
-        // 怎么调用用户微服务的 /users/{id} 的
-        UserDTO userDTO = restTemplate.getForObject(targetUri, UserDTO.class,1);
+        // Ribbon会自动把user-center转换成用户中心在nacos上地址并做负载均衡进行请求
+        UserDTO userDTO = restTemplate.getForObject("http://user-center/users/{id}", UserDTO.class,userId);
         ShareDTO shareDTO = new ShareDTO();
-        BeanUtils.copyProperties(share, shareDTO);
+        BeanUtils.copyProperties(share, userDTO);
         shareDTO.setWxNickname(userDTO.getWxNickname());
         return shareDTO;
     }

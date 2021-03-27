@@ -3,6 +3,7 @@ package top.lothar.contentcenter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 import tk.mybatis.spring.annotation.MapperScan;
@@ -25,9 +26,11 @@ public class ContentCenterApplication {
 
     /**
      * spring ioc 中创建对象
+     * {@link LoadBalanced} 为RestTemplate整合Ribbon
      * @return
      */
     @Bean
+    @LoadBalanced
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
