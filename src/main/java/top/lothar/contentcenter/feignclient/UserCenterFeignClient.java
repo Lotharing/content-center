@@ -3,6 +3,7 @@ package top.lothar.contentcenter.feignclient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import top.lothar.contentcenter.configuration.UserCenterFeignConfiguration;
 import top.lothar.contentcenter.domain.dto.user.UserDTO;
 
 /**
@@ -11,7 +12,7 @@ import top.lothar.contentcenter.domain.dto.user.UserDTO;
  * @author LuTong.Zhao
  * @Date 2021/3/28 13:29
  */
-@FeignClient(name = "user-center")
+@FeignClient(name = "user-center",configuration = UserCenterFeignConfiguration.class)
 public interface UserCenterFeignClient {
     /**
      * http://user-center/users/{id}

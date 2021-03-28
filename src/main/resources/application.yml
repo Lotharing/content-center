@@ -36,3 +36,8 @@ ribbon:
   eager-load:
     clients: user-center
     enabled: true
+
+# 日志
+logging:
+  level:
+    top.lothar.contentcenter.feignclient.UserCenterFeignClient: debug
