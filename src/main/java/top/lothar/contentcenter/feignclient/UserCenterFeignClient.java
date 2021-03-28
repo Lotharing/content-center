@@ -32,5 +32,7 @@ public interface UserCenterFeignClient {
      *      @GetMapping("")
      *      String index();
      *      让controller去调用就行了
+     *
+     * https://www.imooc.com/article/289005  * feign常见问题总结
      */
 }
