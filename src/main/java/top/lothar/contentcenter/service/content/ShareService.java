@@ -11,6 +11,7 @@ import top.lothar.contentcenter.dao.content.ShareMapper;
 import top.lothar.contentcenter.domain.dto.content.ShareDTO;
 import top.lothar.contentcenter.domain.dto.user.UserDTO;
 import top.lothar.contentcenter.domain.entity.content.Share;
+import top.lothar.contentcenter.feignclient.UserCenterFeignClient;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,11 +27,9 @@ import java.util.stream.Collectors;
 @Service
 public class ShareService {
 
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Autowired
-    private DiscoveryClient discoveryClient;
+    private UserCenterFeignClient userCenterFeignClient;
 
     @Autowired
     private ShareMapper shareMapper;
@@ -39,29 +38,8 @@ public class ShareService {
         Share share = this.shareMapper.selectByPrimaryKey(id);
         // 发布人ID
         Integer userId = share.getUserId();
-        // 从n a c o s注册中心获取可用的user实例子
-        // List<ServiceInstance> instances = discoveryClient.getInstances("user-center");
-
-//        String targetUri = instances.stream()
-//                .map(instance -> instance.getUri().toString() + "/users/{id}")
-//                .findFirst()
-//                .orElseThrow(() -> new IllegalArgumentException("当前没有实例..."));
-
-        // 所有用户中心实例的请求地址
-//        List<String> targetUris = instances.stream()
-//                .map(instance -> instance.getUri().toString() + "/users/{id}")
-//                .collect(Collectors.toList());
-//
-//        // 客户端负载均衡： 随机算法
-//        int index = ThreadLocalRandom.current().nextInt(targetUris.size());
-//        targetUri = targetUris.get(index);
-
-//        log.info("请求的目标地址: {}" , targetUri);
-//        // 怎么调用用户微服务的 /users/{id} 的
-//        UserDTO userDTO = restTemplate.getForObject(targetUri, UserDTO.class,1);
-
-        // Ribbon会自动把user-center转换成用户中心在nacos上地址并做负载均衡进行请求
-        UserDTO userDTO = restTemplate.getForObject("http://user-center/users/{id}", UserDTO.class,userId);
+        // 通过openfeign实现http调用user-center服务接口 , 并且feign整合Ribbon, 所以Ribbon配置对负载均衡策略依旧有效
+        UserDTO userDTO = this.userCenterFeignClient.findById(userId);
         ShareDTO shareDTO = new ShareDTO();
         BeanUtils.copyProperties(share, userDTO);
         shareDTO.setWxNickname(userDTO.getWxNickname());
