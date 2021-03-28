@@ -15,6 +15,8 @@ spring:
       discovery:
         # 服务注册地址
         server-addr: localhost:8848
+        # 命名空间 dev
+        namespace: 6b0e9c31-3145-411d-bf5f-439f90a03ad2
         cluster-name: BJ
         # k: v形式的元数据信息配置
         metadata:
