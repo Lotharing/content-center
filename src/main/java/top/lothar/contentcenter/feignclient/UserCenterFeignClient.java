@@ -21,4 +21,16 @@ public interface UserCenterFeignClient {
      */
     @GetMapping("/users/{id}")
     UserDTO findById(@PathVariable Integer id);
+
+    /***
+     * 多参数配置
+     * https://www.imooc.com/article/289000 手记：Feign多参数请求写法主要是@StringQueryMap @RequestParam @RequestBody
+     *
+     * 外部url配置「不再nacos中注册的」也就是Feign脱离Ribbon的使用方式
+     * @FeignClient(name = "xxx" , url = "http://www.google.com")
+     * interface
+     *      @GetMapping("")
+     *      String index();
+     *      让controller去调用就行了
+     */
 }
