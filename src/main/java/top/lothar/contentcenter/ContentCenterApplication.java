@@ -15,6 +15,8 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @Date 2020-03-22 22:10:00
  *
  * {@link MapperScan}扫描MySQL这些包里的接口
+ *
+ * {@link EnableFeignClients 属性 defaultConfiguration ="全局日志配置类" 「UserCenterFeignConfiguration的写法」}
  */
 @MapperScan("top.lothar")
 @SpringBootApplication
