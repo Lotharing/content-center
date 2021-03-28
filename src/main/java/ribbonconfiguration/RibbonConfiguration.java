@@ -3,6 +3,7 @@ package ribbonconfiguration;
 import com.netflix.loadbalancer.IRule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import top.lothar.contentcenter.configuration.NacosSameClusterWeightRule;
 import top.lothar.contentcenter.configuration.NacosWeightedRule;
 
 /**
@@ -16,9 +17,13 @@ public class RibbonConfiguration {
 
     @Bean
     public IRule ribbonRule(){
+        // 随机一个负载均衡算法
         // return new RandomRule();
 
         // 自定义Nacos提供的权重负载均衡规则
-        return new NacosWeightedRule();
+        // return new NacosWeightedRule();
+
+        // 自定义一个指定同一集群优先调用的权重负载均衡实现
+        return new NacosSameClusterWeightRule();
     }
 }
