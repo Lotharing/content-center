@@ -41,3 +41,10 @@ ribbon:
 logging:
   level:
     top.lothar.contentcenter.feignclient.UserCenterFeignClient: debug
+
+# feign配置方式去打印日志,要把@FeignClient注解上的configuration配置类去掉
+#feign:
+#  client:
+#    config:
+#      user-center:
+#        loggerLevel: full
