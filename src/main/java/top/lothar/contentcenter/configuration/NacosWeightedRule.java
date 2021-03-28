@@ -1,4 +1,4 @@
-package ribbonconfiguration;
+package top.lothar.contentcenter.configuration;
 
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingService;
