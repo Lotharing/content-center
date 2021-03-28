@@ -46,5 +46,6 @@ logging:
 #feign:
 #  client:
 #    config:
+# 服务名称改为default: 就可以变全局配置
 #      user-center:
 #        loggerLevel: full
