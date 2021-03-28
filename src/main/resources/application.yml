@@ -16,6 +16,13 @@ spring:
         # 服务注册地址
         server-addr: localhost:8848
         cluster-name: BJ
+        # k: v形式的元数据信息配置
+        metadata:
+          # 自己实例版本
+          version: v1
+          # 允许调用者的实例版本
+          target-version: v1
+
 
 # 这种是通过配置的方式实现Ribbon在对某个服务调用时候的自定义配置,比如这个负载均衡算法
 #user-center:

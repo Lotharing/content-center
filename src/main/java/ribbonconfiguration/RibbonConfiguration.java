@@ -23,7 +23,7 @@ public class RibbonConfiguration {
         // 自定义Nacos提供的权重负载均衡规则
         // return new NacosWeightedRule();
 
-        // 自定义一个指定同一集群优先调用的权重负载均衡实现
+        // 自定义一个指定同一集群优先调用的权重负载均衡实现 , 引入元数据控制版本调用
         return new NacosSameClusterWeightRule();
     }
 }
