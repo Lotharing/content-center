@@ -1,5 +1,12 @@
 server:
   port: 8010
+# 开启监控
+management:
+  endpoints:
+    web:
+      exposure:
+        # 这里用* 代表暴露所有端点只是为了观察效果，实际中按照需进行端点暴露
+        include: "*"
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -24,6 +31,10 @@ spring:
           version: v1
           # 允许调用者的实例版本
           target-version: v1
+    sentinel:
+      transport:
+        # 指定sentinel控制台的地址
+        dashboard: localhost:8080
 
 
 # 这种是通过配置的方式实现Ribbon在对某个服务调用时候的自定义配置,比如这个负载均衡算法

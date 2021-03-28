@@ -66,6 +66,16 @@
 <!--            <artifactId>feign-okhttp</artifactId>-->
 <!--            <version>10.1.0</version>-->
 <!--        </dependency>-->
+        <!-- sentinel 只需加依赖就行,可以实现 sentinel 的流量控制，熔断降级功能-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+        <!--/actuator/sentinel 健康检测 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
