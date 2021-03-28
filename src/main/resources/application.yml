@@ -20,3 +20,9 @@ spring:
 #user-center:
 #  ribbon:
 #    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+
+# ribbon 指定为user-center开启饥饿加载, 多个 , 分割
+ribbon:
+  eager-load:
+    clients: user-center
+    enabled: true
