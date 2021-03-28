@@ -16,6 +16,9 @@ public class RibbonConfiguration {
 
     @Bean
     public IRule ribbonRule(){
-        return new RandomRule();
+        // return new RandomRule();
+
+        // 自定义Nacos提供的权重负载均衡规则
+        return new NacosWeightedRule();
     }
 }

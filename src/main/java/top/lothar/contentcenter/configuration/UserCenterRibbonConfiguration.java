@@ -13,8 +13,8 @@ import ribbonconfiguration.RibbonConfiguration;
  * @Date 2021/3/28 00:17
  */
 @Configuration
-@RibbonClient(name = "user-center",configuration = RibbonConfiguration.class)
-// @RibbonClients(defaultConfiguration = RibbonConfiguration.class)
+//@RibbonClient(name = "user-center",configuration = RibbonConfiguration.class)
+@RibbonClients(defaultConfiguration = RibbonConfiguration.class)
 public class UserCenterRibbonConfiguration {
 
 }
