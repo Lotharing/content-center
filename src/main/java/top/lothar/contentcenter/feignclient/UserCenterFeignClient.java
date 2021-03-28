@@ -6,13 +6,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import top.lothar.contentcenter.configuration.UserCenterFeignConfiguration;
 import top.lothar.contentcenter.domain.dto.user.UserDTO;
 
+// 这个是不对异常进行捕获处理对
+import top.lothar.contentcenter.feignclient.fallback.UserCenterFeignClientFallBack;
+
+// 可以使用fallbackFactory = UserCenterFeignClientFallBackFactory.class 来对异常处理
+import top.lothar.contentcenter.feignclient.fallbackfactory.UserCenterFeignClientFallBackFactory;
+
 /**
  * <h1>openfeign声明式http调用</h1>
  *
  * @author LuTong.Zhao
  * @Date 2021/3/28 13:29
  */
-@FeignClient(name = "user-center",configuration = UserCenterFeignConfiguration.class)
+@FeignClient(name = "user-center",configuration = UserCenterFeignConfiguration.class,
+        fallbackFactory = UserCenterFeignClientFallBackFactory.class)
 public interface UserCenterFeignClient {
     /**
      * http://user-center/users/{id}

@@ -62,6 +62,9 @@ logging:
 #        loggerLevel: full
 
 feign:
+  sentinel:
+    # 为feign整合sentinel
+    enabled: true
   httpclient:
     # 让feign使用apache的httpclient做亲求，而不是默认的UrlConnection
     enabled: true

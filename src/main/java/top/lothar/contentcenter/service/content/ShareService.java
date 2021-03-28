@@ -41,7 +41,7 @@ public class ShareService {
         // 通过openfeign实现http调用user-center服务接口 , 并且feign整合Ribbon, 所以Ribbon配置对负载均衡策略依旧有效
         UserDTO userDTO = this.userCenterFeignClient.findById(userId);
         ShareDTO shareDTO = new ShareDTO();
-        BeanUtils.copyProperties(share, userDTO);
+        BeanUtils.copyProperties(share, shareDTO);
         shareDTO.setWxNickname(userDTO.getWxNickname());
         return shareDTO;
     }
