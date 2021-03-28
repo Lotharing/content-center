@@ -46,6 +46,21 @@ logging:
 #feign:
 #  client:
 #    config:
-# 服务名称改为default: 就可以变全局配置
+# 服务名称改为default: 就可以变全局配置 ， 日志级别BASIC也可以给性能进行提高
 #      user-center:
 #        loggerLevel: full
+
+feign:
+  httpclient:
+    # 让feign使用apache的httpclient做亲求，而不是默认的UrlConnection
+    enabled: true
+    # feign最大连接数
+    max-connections: 200
+    # feign单个路径「一个feign接口里边的一个方法」的最大连接数 , 可根据压测结果进行调优
+    max-connections-per-route: 50
+
+# apache的okhttp的请求方式，也可配置连接池
+#  okhttp:
+#    enabled: true
+
+

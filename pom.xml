@@ -54,6 +54,18 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
+        <!-- 注意：feign默认是urlConnection连接的不支持连接池 -->
+        <!-- feign的一种 httpclient 请求方式支持连接池 -->
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-httpclient</artifactId>
+        </dependency>
+        <!-- feign的一种 okhttp 请求方式支持连接池 -->
+<!--        <dependency>-->
+<!--            <groupId>io.github.openfeign</groupId>-->
+<!--            <artifactId>feign-okhttp</artifactId>-->
+<!--            <version>10.1.0</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <dependencyManagement>
