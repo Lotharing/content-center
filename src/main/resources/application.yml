@@ -77,4 +77,11 @@ feign:
 #  okhttp:
 #    enabled: true
 
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    # 必须指定
+    group: test-group
+
+
 
