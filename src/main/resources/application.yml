@@ -35,6 +35,17 @@ spring:
       transport:
         # 指定sentinel控制台的地址
         dashboard: localhost:8080
+    # 消息stream流
+    stream:
+      rocketmq:
+        # 目标绑定器与消息中间件通信
+        binder:
+          name-server: 127.0.0.1:9876
+        # 可以通过bindings从rabbit消费消息，在经过应用处理给kafka生产消息
+      bindings:
+        output:
+          # 指定topic
+          destination: stream-test-topic
 
 
 # 这种是通过配置的方式实现Ribbon在对某个服务调用时候的自定义配置,比如这个负载均衡算法
@@ -52,6 +63,8 @@ ribbon:
 logging:
   level:
     top.lothar.contentcenter.feignclient.UserCenterFeignClient: debug
+    # 只打印error级别的日志
+    com.alibaba.nacos: error
 
 # feign配置方式去打印日志,要把@FeignClient注解上的configuration配置类去掉
 #feign:
