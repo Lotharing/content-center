@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.lothar.contentcenter.auth.CheckLogin;
 import top.lothar.contentcenter.domain.dto.content.ShareDTO;
 import top.lothar.contentcenter.service.content.ShareService;
 
@@ -30,6 +31,7 @@ public class ShareController {
     @Autowired
     private DiscoveryClient discoveryClient;
 
+    @CheckLogin
     @RequestMapping("/{id}")
     public ShareDTO findShareById(@PathVariable Integer id){
         return this.shareService.findShareById(id);
