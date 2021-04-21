@@ -44,8 +44,8 @@ spring:
         # 可以通过bindings从rabbit消费消息，在经过应用处理给kafka生产消息
       bindings:
         output:
-          # 指定topic
-          destination: stream-test-topic
+          # 指定topic,{相同的topic进行生产消费对应}
+          destination: stream-my-topic
 
 
 # 这种是通过配置的方式实现Ribbon在对某个服务调用时候的自定义配置,比如这个负载均衡算法
@@ -95,6 +95,14 @@ rocketmq:
   producer:
     # 必须指定
     group: test-group
+
+#JWT密钥配置
+jwt:
+  secret: MQj3al5#jH&9@notebylothar
+  # 有效期，单位秒，默认2周
+  expire-time-in-second: 1209600
+
+
 
 
 
