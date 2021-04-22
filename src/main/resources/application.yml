@@ -78,6 +78,12 @@ feign:
   sentinel:
     # 为feign整合sentinel
     enabled: true
+  client:
+    config:
+      default:
+        loggerLevel: full
+        requestInterceptors:
+          - top.lothar.contentcenter.feignclient.intercept.TokenRelayRequestIntercept
   httpclient:
     # 让feign使用apache的httpclient做亲求，而不是默认的UrlConnection
     enabled: true
