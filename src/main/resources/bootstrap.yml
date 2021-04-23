@@ -1,0 +1,11 @@
+# n a cos配置中心配置文件,必须在bootstrap.yml
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+  application:
+    name: content-center
+  profiles:
+    active: dev
