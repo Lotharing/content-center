@@ -8,6 +8,14 @@ management:
         # 这里用* 代表暴露所有端点只是为了观察效果，实际中按照需进行端点暴露
         include: "*"
 spring:
+  zipkin:
+    base-url: http://localhost:9411/
+    # 关闭服务发现,解决异常 http://www.imooc.com/article/291578
+    discoveryClientEnabled: false
+  sleuth:
+    sampler:
+      # 抽样率1.0 = 100% 上报所有,默认1.0 , 抽样降低对应用性能对影响
+      probability: 1.0
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/content_center?useSSL=false
