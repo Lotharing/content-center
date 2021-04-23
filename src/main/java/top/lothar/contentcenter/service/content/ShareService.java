@@ -1,5 +1,7 @@
 package top.lothar.contentcenter.service.content;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.apache.rocketmq.spring.support.RocketMQHeaders;
@@ -18,6 +20,8 @@ import top.lothar.contentcenter.domain.entity.content.Share;
 import top.lothar.contentcenter.domain.entity.messaging.RocketmqTransactionLog;
 import top.lothar.contentcenter.domain.enums.AuditStatusEnum;
 import top.lothar.contentcenter.feignclient.UserCenterFeignClient;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -148,4 +152,16 @@ public class ShareService {
         );
     }
 
+    /**
+     *
+     * @param title
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public PageInfo<Share> q(String title, Integer pageNo, Integer pageSize) {
+        PageHelper.startPage(pageNo, pageSize);
+        List<Share> shares = this.shareMapper.selectByParam(title);
+        return new PageInfo<>(shares);
+    }
 }

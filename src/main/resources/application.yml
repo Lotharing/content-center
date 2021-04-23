@@ -73,6 +73,8 @@ logging:
     top.lothar.contentcenter.feignclient.UserCenterFeignClient: debug
     # 只打印error级别的日志
     com.alibaba.nacos: error
+    # mapper所在包debug日志
+    top.lothar.contentcenter.dao.content: debug
 
 # feign配置方式去打印日志,要把@FeignClient注解上的configuration配置类去掉
 #feign:
