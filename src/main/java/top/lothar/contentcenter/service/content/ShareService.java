@@ -25,9 +25,11 @@ import top.lothar.contentcenter.domain.enums.AuditStatusEnum;
 import top.lothar.contentcenter.feignclient.UserCenterFeignClient;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 /**
@@ -164,12 +166,38 @@ public class ShareService {
      * @param title
      * @param pageNo
      * @param pageSize
+     * @param userId
      * @return
      */
-    public PageInfo<Share> q(String title, Integer pageNo, Integer pageSize) {
+    public PageInfo<Share> q(String title, Integer pageNo, Integer pageSize, Integer userId) {
         PageHelper.startPage(pageNo, pageSize);
         List<Share> shares = this.shareMapper.selectByParam(title);
-        return new PageInfo<>(shares);
+        // 「先兑换了才能下载」用户没有登陆down_url全是空的 ， 登陆了看mid_user_share 如果没有数据那么share的downloadUrl也全部null
+        List<Share> sharesDeal = new ArrayList<>();
+        // 用户是表示游客,只能看不能下载
+        if (userId == null) {
+            sharesDeal = shares.stream()
+                    .peek(share -> {
+                        share.setDownloadUrl(null);
+                    })
+                    .collect(Collectors.toList());
+        } else {
+            // 兑换过的才显示下载地址
+            sharesDeal = shares.stream()
+                    .peek(share -> {
+                        MidUserShare midUserShare = this.midUserShareMapper.selectOne(
+                                MidUserShare.builder()
+                                    .userId(userId)
+                                    .shareId(share.getId())
+                                    .build()
+                        );
+                        if (midUserShare == null) {
+                            share.setDownloadUrl(null);
+                        }
+                    })
+                    .collect(Collectors.toList());
+        }
+        return new PageInfo<>(sharesDeal);
     }
 
     /**

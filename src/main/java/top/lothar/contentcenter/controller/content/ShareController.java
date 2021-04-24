@@ -1,6 +1,8 @@
 package top.lothar.contentcenter.controller.content;
 
 import com.github.pagehelper.PageInfo;
+import io.jsonwebtoken.Claims;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -11,6 +13,7 @@ import top.lothar.contentcenter.auth.CheckLogin;
 import top.lothar.contentcenter.domain.dto.content.ShareDTO;
 import top.lothar.contentcenter.domain.entity.content.Share;
 import top.lothar.contentcenter.service.content.ShareService;
+import top.lothar.contentcenter.util.JwtOperator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -31,6 +34,9 @@ public class ShareController {
     @Autowired
     private DiscoveryClient discoveryClient;
 
+    @Autowired
+    private JwtOperator jwtOperator;
+
     @CheckLogin
     @RequestMapping("/{id}")
     public ShareDTO findShareById(@PathVariable Integer id){
@@ -46,11 +52,17 @@ public class ShareController {
      */
     @GetMapping("/q")
     public PageInfo<Share> q(@RequestParam(required = false) String title,
-                      @RequestParam(required = false, defaultValue = "1") Integer pageNo,
-                      @RequestParam(required = false, defaultValue = "10") Integer pageSize){
+                             @RequestParam(required = false, defaultValue = "1") Integer pageNo,
+                             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                             @RequestHeader("X-Token")String token){
         // pageSize安全校验
         if (pageSize > 100) { pageSize = 100; }
-        return shareService.q(title, pageNo, pageSize);
+        Integer userId = null;
+        if (StringUtils.isNotBlank(token)) {
+            Claims claims = jwtOperator.getClaimsFromToken(token);
+            userId = (Integer) claims.get("id");
+        }
+        return shareService.q(title, pageNo, pageSize, userId);
     }
 
     /**
