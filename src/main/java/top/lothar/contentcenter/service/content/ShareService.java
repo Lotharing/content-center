@@ -10,17 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.lothar.contentcenter.dao.content.MidUserShareMapper;
 import top.lothar.contentcenter.dao.content.ShareMapper;
 import top.lothar.contentcenter.dao.messaging.RocketmqTransactionLogMapper;
 import top.lothar.contentcenter.domain.dto.content.ShareAuditDTO;
 import top.lothar.contentcenter.domain.dto.content.ShareDTO;
 import top.lothar.contentcenter.domain.dto.messaging.UserAddBonusMsgDTO;
+import top.lothar.contentcenter.domain.dto.user.UserAddBonusDTO;
 import top.lothar.contentcenter.domain.dto.user.UserDTO;
+import top.lothar.contentcenter.domain.entity.content.MidUserShare;
 import top.lothar.contentcenter.domain.entity.content.Share;
 import top.lothar.contentcenter.domain.entity.messaging.RocketmqTransactionLog;
 import top.lothar.contentcenter.domain.enums.AuditStatusEnum;
 import top.lothar.contentcenter.feignclient.UserCenterFeignClient;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -47,6 +51,9 @@ public class ShareService {
 
     @Autowired
     private RocketmqTransactionLogMapper rocketmqTransactionLogMapper;
+
+    @Autowired
+    private MidUserShareMapper midUserShareMapper;
 
     /**
      * 查询分享信息
@@ -153,7 +160,7 @@ public class ShareService {
     }
 
     /**
-     *
+     * 首页分享内容查询
      * @param title
      * @param pageNo
      * @param pageSize
@@ -163,5 +170,50 @@ public class ShareService {
         PageHelper.startPage(pageNo, pageSize);
         List<Share> shares = this.shareMapper.selectByParam(title);
         return new PageInfo<>(shares);
+    }
+
+    /**
+     * 积分兑换分享内容
+     * @param id
+     * @return
+     */
+    public Share exchangeById(Integer id, HttpServletRequest request) {
+        Object userId = request.getAttribute("id");
+        Integer integerUserId = (Integer) userId;
+        // 1.id查询share
+        Share share = this.shareMapper.selectByPrimaryKey(id);
+        if (share == null) {
+            throw new IllegalArgumentException("该分享不存在");
+        }
+        // 当前用户如果是兑换过了此分享信息则直接返回
+        MidUserShare midUserShare = this.midUserShareMapper.selectOne(
+                MidUserShare.builder()
+                        .shareId(id)
+                        .userId(integerUserId)
+                        .build()
+        );
+        if (midUserShare != null) { return share; }
+        // 分享内容所需积分
+        Integer price = share.getPrice();
+        // 2.根据当前用户ID查询积分是否充足
+        UserDTO userDTO = this.userCenterFeignClient.findById(integerUserId);
+        if (share.getPrice() > userDTO.getBonus()) {
+            throw new IllegalArgumentException("用户积分不足");
+        }
+        // 3.扣减积分, 直接用feign玩
+        this.userCenterFeignClient.addBonus(
+                UserAddBonusDTO.builder()
+                    .userId(integerUserId)
+                    .bonus(0 - price)
+                    .build()
+        );
+        // 4.往mid_user_share兑换表插入数据,表示已兑换
+        this.midUserShareMapper.insertSelective(
+                MidUserShare.builder()
+                    .userId(integerUserId)
+                    .shareId(id)
+                .build()
+        );
+        return share;
     }
 }

@@ -3,6 +3,7 @@ package top.lothar.contentcenter.feignclient.fallbackfactory;
 import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import top.lothar.contentcenter.domain.dto.user.UserAddBonusDTO;
 import top.lothar.contentcenter.domain.dto.user.UserDTO;
 import top.lothar.contentcenter.feignclient.UserCenterFeignClient;
 
@@ -25,6 +26,12 @@ public class UserCenterFeignClientFallBackFactory implements FallbackFactory<Use
                 UserDTO userDTO = new UserDTO();
                 userDTO.setWxNickname("我是中国人");
                 return userDTO;
+            }
+
+            @Override
+            public UserDTO addBonus(UserAddBonusDTO userAddBonusDTO) {
+                log.warn("远程调用被限流/降级" , cause);
+                return null;
             }
         };
     }

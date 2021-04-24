@@ -3,7 +3,11 @@ package top.lothar.contentcenter.feignclient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import top.lothar.contentcenter.configuration.UserCenterFeignConfiguration;
+import top.lothar.contentcenter.domain.dto.messaging.UserAddBonusMsgDTO;
+import top.lothar.contentcenter.domain.dto.user.UserAddBonusDTO;
 import top.lothar.contentcenter.domain.dto.user.UserDTO;
 
 // 这个是不对异常进行捕获处理对
@@ -22,6 +26,7 @@ import top.lothar.contentcenter.feignclient.fallbackfactory.UserCenterFeignClien
         fallbackFactory = UserCenterFeignClientFallBackFactory.class)
 public interface UserCenterFeignClient {
     /**
+     * 用户中心-用户信息
      * http://user-center/users/{id}
      * @param id
      * @return
@@ -42,4 +47,13 @@ public interface UserCenterFeignClient {
      *
      * https://www.imooc.com/article/289005  * feign常见问题总结
      */
+
+    /**
+     * 用户中心增加积分
+     * http://user-center/users/add-bonus/{id}
+     * @param userAddBonusDTO
+     * @return
+     */
+    @PutMapping("/users/add-bonus/{id}")
+    UserDTO addBonus(@RequestBody UserAddBonusDTO userAddBonusDTO);
 }
