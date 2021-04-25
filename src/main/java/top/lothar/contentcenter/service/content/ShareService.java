@@ -253,4 +253,13 @@ public class ShareService {
     public List<Share> getMyContributions(Integer userId) {
         return this.shareMapper.selectByUserId(userId);
     }
+
+    /**
+     * 我的兑换内容
+     * @param userId
+     * @return
+     */
+    public List<Share> getMyExchanges(Integer userId) {
+        return this.shareMapper.selectShareByUserExchange(userId);
+    }
 }

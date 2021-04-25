@@ -22,4 +22,11 @@ public interface ShareMapper extends Mapper<Share> {
      * @return
      */
     List<Share> selectByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 用户的兑换信息
+     * @param userId
+     * @return
+     */
+    List<Share> selectShareByUserExchange(@Param("userId") Integer userId);
 }

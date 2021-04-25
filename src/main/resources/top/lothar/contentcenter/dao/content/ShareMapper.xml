@@ -44,4 +44,15 @@
             user_id = #{userId}
     </select>
 
+    <select id="selectShareByUserExchange" resultMap="BaseResultMap">
+        SELECT
+            s.*
+        FROM
+            mid_user_share u
+        LEFT JOIN
+            share s ON u.share_id = s.id
+        WHERE
+            u.user_id = #{userId}
+    </select>
+
 </mapper>

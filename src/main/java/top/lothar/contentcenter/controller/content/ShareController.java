@@ -86,6 +86,17 @@ public class ShareController {
         return shareService.getMyContributions(userId);
     }
 
+    /**
+     * 我的兑换接口
+     * @param userId
+     * @return
+     */
+    @GetMapping("/my")
+    public List<Share> myExchange(@RequestParam("userId")Integer userId){
+        return this.shareService.getMyExchanges(userId);
+    }
+
+
     /** 测试接口 **/
 
 
