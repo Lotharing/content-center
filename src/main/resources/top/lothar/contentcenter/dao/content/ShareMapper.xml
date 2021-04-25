@@ -34,4 +34,14 @@
             and audit_status = 'PASS'
         </where>
     </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            share
+        WHERE
+            user_id = #{userId}
+    </select>
+
 </mapper>

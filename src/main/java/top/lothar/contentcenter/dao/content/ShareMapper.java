@@ -15,4 +15,11 @@ public interface ShareMapper extends Mapper<Share> {
      * @return
      */
     List<Share> selectByParam(@Param("title") String title);
+
+    /**
+     * 用户查询投稿信息
+     * @param userId
+     * @return
+     */
+    List<Share> selectByUserId(@Param("userId") Integer userId);
 }

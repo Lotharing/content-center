@@ -244,4 +244,13 @@ public class ShareService {
         );
         return share;
     }
+
+    /**
+     * 我的投稿内容
+     * @param userId
+     * @return
+     */
+    public List<Share> getMyContributions(Integer userId) {
+        return this.shareMapper.selectByUserId(userId);
+    }
 }
